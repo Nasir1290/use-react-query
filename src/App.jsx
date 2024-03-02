@@ -5,7 +5,7 @@ import AddProduct from './components/AddProduct'
 
 export default function App() {
   return (
-    <div className=' flex bg-slate-400 m-0 p-0'>
+    <div className=' flex bg-slate-500 m-0 p-4'>
       <AddProduct/>
      <ProductsList/>
      <ProductDetails id={8}/>

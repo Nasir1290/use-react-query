@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
 
 export default function AddProduct() {
+
   const initialState = {
     title: "",
     description: "",
@@ -20,15 +21,31 @@ export default function AddProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newProduct = { ...state, id: crypto.randomUUID().toString() };
+    mutation.mutate(newProduct);
     setState(initialState);
-    console.log(state);
   };
+
+// Post new Product into our database
+const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (newProduct) => {
+      axios.post(`http://localhost:3000/products`, newProduct);
+    },
+    onSuccess:(data) => {
+        queryClient.invalidateQueries(["products"]);
+    }
+  });
+
 
   return (
     <div className=" m-2 p-2  w-1/5 h-1/2">
       <h1 className=" text-3xl my-2">Add a Product</h1>
 
-      <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
+      <form
+        className="max-w-sm mx-auto border-4 rounded-xl p-4 "
+        onSubmit={handleSubmit}
+      >
         <div className="mb-5">
           <label
             htmlFor="email"
