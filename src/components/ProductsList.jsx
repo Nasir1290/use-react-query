@@ -37,5 +37,5 @@ export default function ProductsList() {
         ))}
       </ul>
     </div>
-  )
+  );
 }
